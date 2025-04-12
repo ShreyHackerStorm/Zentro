@@ -44,3 +44,7 @@ def view_spending(request):
         'savings': savings,
     }
     return render(request, 'view_spending.html', context)
+
+
+def home(request):
+    return render(request, 'home.html')
