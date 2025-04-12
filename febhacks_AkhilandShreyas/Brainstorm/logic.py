@@ -2,7 +2,7 @@ weeklyAllowance = int(input("Enter your weekly allowance: "))
 weeklyGoals = {}
 
 def goal_setting(goals):
-    print("Let's set some goals for the week:")
+    print("Let's set some goals for the week")
     while True:
         category = input("Name a category to spend in: ")
         amount = int(input(f"How much do you want to spend in {category}: "))
@@ -56,6 +56,6 @@ for category in weeklyGoals:
         print(f"You are ${spent - goal} over your goal in {category}.")
     else:
         print(f"You are on track in '{category}'. You are ${goal - spent} under your goal.")
-    
+
 print(f"\nYou have spent ${totalSpent}. You currently have saved ${weeklyAllowance - totalSpent}.")
 print("Weekly Expenditure Breakdown:", weeklyExpenditure)
