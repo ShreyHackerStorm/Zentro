@@ -1,16 +1,12 @@
 from django import forms
-from .models import CategoryBudget, Expense
+from .models import Category, WeeklyAllowance, DailyExpense
 
-class CategoryBudgetForm(forms.ModelForm):
+class AllowanceForm(forms.ModelForm):
     class Meta:
-        model = CategoryBudget
-        fields = ['name', 'budget']
-        widgets = {
-            'name': forms.TextInput(attrs={'placeholder': 'Category name'}),
-            'budget': forms.NumberInput(attrs={'placeholder': '$'})
-        }
+        model = WeeklyAllowance
+        fields = ['amount', 'week_start_date']
 
 class ExpenseForm(forms.ModelForm):
     class Meta:
-        model = Expense
-        fields = ['day', 'category', 'amount']
+        model = DailyExpense
+        fields = ['day', 'category', 'amount', 'date']

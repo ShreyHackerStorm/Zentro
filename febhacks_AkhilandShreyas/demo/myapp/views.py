@@ -1,65 +1,46 @@
 from django.shortcuts import render, redirect
+from .models import WeeklyAllowance, DailyExpense, Category
+from .forms import AllowanceForm, ExpenseForm
 from django.contrib.auth.decorators import login_required
-from .models import CategoryBudget, Expense
-from .forms import CategoryBudgetForm, ExpenseForm
 
 @login_required
-def set_budgets(request):
+def set_allowance(request):
     if request.method == 'POST':
-        form = CategoryBudgetForm(request.POST)
+        form = AllowanceForm(request.POST)
         if form.is_valid():
-            budget = form.save(commit=False)
-            budget.user = request.user
-            budget.save()
-            return redirect('set_budgets')
-    
-    budgets = CategoryBudget.objects.filter(user=request.user)
-    form = CategoryBudgetForm()
-    return render(request, 'set_budgets.html', {
-        'form': form,
-        'budgets': budgets
-    })
+            allowance = form.save(commit=False)
+            allowance.user = request.user
+            allowance.save()
+            return redirect('add_expenses')
+    else:
+        form = AllowanceForm()
+    return render(request, 'set_allowance.html', {'form': form})
 
 @login_required
 def add_expenses(request):
+    allowance = WeeklyAllowance.objects.filter(user=request.user).latest('week_start_date')
     if request.method == 'POST':
-        form = ExpenseForm(request.POST, user=request.user)
+        form = ExpenseForm(request.POST)
         if form.is_valid():
             expense = form.save(commit=False)
-            expense.user = request.user
+            expense.allowance = allowance
             expense.save()
-            return redirect('add_expenses')
-    
-    expenses = Expense.objects.filter(user=request.user)
-    form = ExpenseForm(user=request.user)
-    return render(request, 'add_expenses.html', {
-        'form': form,
-        'expenses': expenses
-    })
+            return redirect('view_spending')
+    else:
+        form = ExpenseForm()
+    return render(request, 'add_expenses.html', {'form': form, 'allowance': allowance})
 
 @login_required
 def view_spending(request):
-    categories = CategoryBudget.objects.filter(user=request.user)
-    expenses = Expense.objects.filter(user=request.user)
+    allowance = WeeklyAllowance.objects.filter(user=request.user).latest('week_start_date')
+    expenses = DailyExpense.objects.filter(allowance=allowance)
+    total_spent = sum(expense.amount for expense in expenses)
+    savings = allowance.amount - total_spent
     
-    spending_data = []
-    total_saved = 0
-    
-    for category in categories:
-        cat_expenses = expenses.filter(category=category)
-        total_spent = sum(e.amount for e in cat_expenses)
-        difference = category.budget - total_spent
-        total_saved += difference
-        
-        spending_data.append({
-            'category': category.name,
-            'budget': category.budget,
-            'spent': total_spent,
-            'difference': difference,
-            'overspent': difference < 0
-        })
-    
-    return render(request, 'view_spending.html', {
-        'spending_data': spending_data,
-        'total_saved': total_saved
-    })
+    context = {
+        'allowance': allowance,
+        'expenses': expenses,
+        'total_spent': total_spent,
+        'savings': savings,
+    }
+    return render(request, 'view_spending.html', context)
