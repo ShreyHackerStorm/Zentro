@@ -1,5 +1,6 @@
 from django.contrib import admin
-from.models import TodoItem
+from .models import Category, WeeklyAllowance, DailyExpense
 
-# Register your models here.
-admin.site.register(TodoItem)
+admin.site.register(Category)
+admin.site.register(WeeklyAllowance)
+admin.site.register(DailyExpense)

@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Add Daily Expenses</h2>
+<p>Weekly Allowance: ${{ allowance.amount }}</p>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Add Expense</button>
+</form>
+{% endblock %}

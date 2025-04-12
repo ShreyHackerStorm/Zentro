@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Your Spending Summary</h2>
+<p>Weekly Allowance: ${{ allowance.amount }}</p>
+<p>Total Spent: ${{ total_spent }}</p>
+<p>Savings: ${{ savings }}</p>
+
+<h3>Daily Expenses</h3>
+<table>
+    <tr>
+        <th>Day</th>
+        <th>Category</th>
+        <th>Amount</th>
+        <th>Date</th>
+    </tr>
+    {% for expense in expenses %}
+    <tr>
+        <td>{{ expense.day }}</td>
+        <td>{{ expense.category }}</td>
+        <td>${{ expense.amount }}</td>
+        <td>{{ expense.date }}</td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}
