@@ -1,38 +1,41 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>
-      {% block title %}
-        Django App
-      {% endblock %}
-    </title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"  rel="stylesheet" />
-  </head>
-  <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-      <a class="navbar-brand" href="#">My Django App</a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav">
-          <li class="nav-item active">
-            <a class="nav-link" href="#">Home</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'set_allowance' %}">Set Allowance</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'add_expenses' %}">Add Expenses</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'view_spending' %}">View Spending</a>
-
-        </ul>
-      </div>
+<head>
+    <meta charset="UTF-8">
+    <title>Zentro - {% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #fef9e7;
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+        }
+        nav {
+            background-color: #ffe066;
+        }
+        .zentro-header {
+            font-size: 2rem;
+            color: #f77f00;
+        }
+        .container {
+            margin-top: 2rem;
+        }
+        table {
+            background-color: white;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light px-4">
+        <a class="navbar-brand zentro-header" href="/">Zentro</a>
+        <div class="navbar-nav">
+            <a class="nav-link" href="/">Home</a>
+            <a class="nav-link" href="/set-allowance/">Set Allowance</a>
+            <a class="nav-link" href="/add-expenses/">Add Expenses</a>
+            <a class="nav-link" href="/view-spending/">View Spending</a>
+        </div>
     </nav>
-    <div class="container">{% block content %} {% endblock %}</div>
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js" ></script>
-  </body>
+    <div class="container">
+        {% block content %}{% endblock %}
+    </div>
+</body>
 </html>
