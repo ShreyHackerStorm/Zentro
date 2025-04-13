@@ -1,6 +1,6 @@
 {
     "builds": [{
-        "src" : "febhacks_AkhilandShreyas/demo/wsgi.py",
+        "src" : "demo/wsgi.py",
         "use" : "@vercel/python",
         "config": {
             "maxLambdaSize": "15mb", "runtime": "python3.13"
@@ -9,7 +9,7 @@
     "routes": [
         {
             "src": "/(.*)",
-            "dest": "febhacks_AkhilandShreyas/demo/wsgi.py"
+            "dest": "demo/wsgi.py"
         }
     ]
 }
