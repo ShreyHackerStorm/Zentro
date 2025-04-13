@@ -4,7 +4,13 @@
 <h2 class="text-info">Your Spending Summary</h2>
 <p>Weekly Allowance: <strong>${{ allowance.amount }}</strong></p>
 <p>Total Spent: <strong>${{ total_spent }}</strong></p>
-<p>Savings: <strong>${{ savings }}</strong></p>
+
+
+{% if savings >= 0 %}
+    <p class="text-success">You saved <strong>${{ savings }}</strong> this week!</p>
+{% else %}
+    <p class="text-danger">You overspent by <strong>${{ savings|cut:"-" }}</strong> this week!</p>
+{% endif %}
 
 <h3 class="mt-4">Daily Expenses</h3>
 <table class="table table-striped mt-2">
@@ -13,16 +19,14 @@
             <th>Day</th>
             <th>Category</th>
             <th>Amount</th>
-            <th>Date</th>
         </tr>
     </thead>
     <tbody>
         {% for expense in expenses %}
         <tr>
-            <td>{{ expense.day }}</td>
-            <td>{{ expense.category }}</td>
+            <td>{{ expense.get_day_display }}</td> 
+            <td>{{ expense.category }}</td> 
             <td>${{ expense.amount }}</td>
-            <td>{{ expense.date }}</td>
         </tr>
         {% endfor %}
     </tbody>

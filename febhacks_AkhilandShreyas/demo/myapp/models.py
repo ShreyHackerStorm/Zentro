@@ -10,17 +10,25 @@ class Category(models.Model):
 class WeeklyAllowance(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     amount = models.DecimalField(max_digits=10, decimal_places=2)
-    week_start_date = models.DateField()
     
     def __str__(self):
-        return f"{self.user.username}'s allowance for {self.week_start_date}"
+        return f"{self.user.username}'s allowance (${self.amount})"
 
 class DailyExpense(models.Model):
+    DAY_CHOICES = [
+        ('Mon', 'Monday'),
+        ('Tue', 'Tuesday'),
+        ('Wed', 'Wednesday'),
+        ('Thu', 'Thursday'),
+        ('Fri', 'Friday'),
+        ('Sat', 'Saturday'),
+        ('Sun', 'Sunday')
+    ]
+    
     allowance = models.ForeignKey(WeeklyAllowance, on_delete=models.CASCADE)
-    day = models.CharField(max_length=10)  # e.g., "Monday"
+    day = models.CharField(max_length=3, choices=DAY_CHOICES)  
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     amount = models.DecimalField(max_digits=10, decimal_places=2)
-    date = models.DateField()
     
     def __str__(self):
-        return f"{self.day} - {self.category}: ${self.amount}"
+        return f"{self.get_day_display()} - {self.category}: ${self.amount}"  

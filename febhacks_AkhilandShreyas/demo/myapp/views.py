@@ -18,7 +18,8 @@ def set_allowance(request):
 
 @login_required
 def add_expenses(request):
-    allowance = WeeklyAllowance.objects.filter(user=request.user).latest('week_start_date')
+    allowance = WeeklyAllowance.objects.filter(user=request.user).latest('id')
+    
     if request.method == 'POST':
         form = ExpenseForm(request.POST)
         if form.is_valid():
@@ -32,7 +33,8 @@ def add_expenses(request):
 
 @login_required
 def view_spending(request):
-    allowance = WeeklyAllowance.objects.filter(user=request.user).latest('week_start_date')
+    # Get the most recent allowance (no longer filtering by week_start_date)
+    allowance = WeeklyAllowance.objects.filter(user=request.user).latest('id')
     expenses = DailyExpense.objects.filter(allowance=allowance)
     total_spent = sum(expense.amount for expense in expenses)
     savings = allowance.amount - total_spent
@@ -44,7 +46,6 @@ def view_spending(request):
         'savings': savings,
     }
     return render(request, 'view_spending.html', context)
-
 
 def home(request):
     return render(request, 'home.html')
