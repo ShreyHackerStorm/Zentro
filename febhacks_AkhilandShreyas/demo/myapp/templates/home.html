@@ -1,10 +1,103 @@
 {% extends "base.html" %}
+
 {% block title %}Home Page{% endblock %}
+
 {% block content %}
 <div class="text-center">
     <h1 class="text-primary">Welcome to Zentro!</h1>
-    <p class="text-primary"> Spend Smart, Save Smarter</p>
+    <p class="lead">Spend Smart, Save Smarter</p>
     <p class="lead">Zentro helps teens learn to manage money wisely by setting goals, tracking expenses, and watching their savings grow!</p>
     <img src="https://cdn-icons-png.flaticon.com/512/861/861060.png" width="150" alt="Piggy bank illustration">
 </div>
+
+<div class="typewriter-container mt-4">
+  <div id="tip" class="typewriter-text"></div>
+</div>
+
+<style>
+  body {
+    background: #f9fafb;
+    font-family: 'Courier New', Courier, monospace;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    padding: 20px;
+    margin: 0;
+  }
+
+  .typewriter-container {
+    background: #ffffff;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    max-width: 800px; /* Adjusted from 10000px to a reasonable value */
+    text-align: left;
+    margin: 40px auto;
+    min-height: 60px;
+    overflow: hidden; /* Prevent overflow */
+  }
+
+  .typewriter-text {
+    font-size: 18px;
+    color: #333;
+    border-right: 2px solid #333;
+    white-space: normal; /* Allow text to wrap */
+    overflow: hidden;
+    display: inline-block;
+    word-wrap: break-word; /* Prevent words from overflowing */
+  }
+
+  .cursor {
+    display: inline-block;
+    animation: blink .75s step-end infinite;
+  }
+
+  @keyframes blink {
+    from, to { border-color: transparent }
+    50% { border-color: #333; }
+  }
+</style>
+
+<script>
+  const tips = [
+    "1. Start a Simple Budget – Track what’s coming in and going out using apps or even a notebook.",
+    "2. Follow the 50/30/20 Rule – 50% for needs, 30% for wants, 20% for savings.",
+    "3. Open a Savings Account – Look for a teen-friendly account with no fees and a bit of interest.",
+    "4. Set Savings Goals – Create short- and long-term goals to stay motivated and focused.",
+    "5. Think Before You Buy – Ask yourself: Do I need this? Will I care about it in a month?",
+    "6. Learn to Compare Prices – A quick check can save you cash and help find better deals.",
+    "7. Avoid Debt – Credit cards can trap you; borrow wisely and only what you can repay.",
+    "8. Start Earning Early – Babysit, tutor, freelance—real income means real freedom.",
+    "9. Learn About Investing – Even basic knowledge now is a powerful advantage later.",
+    "10. Educate Yourself – Books, podcasts, and videos can teach you to make smart choices.",
+    "💡 Bonus: Automate and Celebrate – Set up auto-saving and reward your progress!"
+  ];
+
+  const textElement = document.getElementById("tip");
+  let tipIndex = 0;
+
+  function typeText(text, i = 0) {
+    if (i <= text.length) {
+      textElement.innerHTML = text.slice(0, i) + '<span class="cursor">|</span>';
+      setTimeout(() => typeText(text, i + 1), 100);  // Adjust speed here
+    } else {
+      setTimeout(() => deleteText(text), 2000);  // Pause before backspace effect
+    }
+  }
+
+  function deleteText(text, i = text.length) {
+    if (i >= 0) {
+      textElement.innerHTML = text.slice(0, i) + '<span class="cursor">|</span>';
+      setTimeout(() => deleteText(text, i - 1), 50);  // Speed of backspacing here
+    } else {
+      tipIndex = (tipIndex + 1) % tips.length;
+      setTimeout(() => typeText(tips[tipIndex]), 400);  // Start typing next tip after pause
+    }
+  }
+
+  // Start the typing effect with the first tip
+  typeText(tips[tipIndex]);
+</script>
+
 {% endblock %}
